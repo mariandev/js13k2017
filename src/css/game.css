@@ -1,8 +1,26 @@
-canvas {
+#game {
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
 
   outline: 2px solid red;
+
+  overflow: hidden;
+}
+
+#game > * {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+
+#map > * {
+  position: absolute;
+  left: 0;
+  top: 0;
+
+  transform-origin: left center;
 }

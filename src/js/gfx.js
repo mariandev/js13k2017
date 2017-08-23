@@ -1,17 +1,20 @@
 var GFX_COLOR_TABLE = {
-  "a": "000|000|000|000",
+  "a": "038|038|038|255",
   "b": "105|043|011|255",
-  "c": "084|084|084|255"
+  "c": "000|000|000|000",
+  "d": "061|025|006|255",
+  "e": "154|120|017|255",
+  "f": "215|167|023|255"
 };
 
 var GFX = {
   tiles: {
-    w: 48,
-    h: 16,
-    s: 8,
+    w: BASE_TILE_SIZE * 3,
+    h: BASE_TILE_SIZE * 3,
+    s: GFX_SCALE,
     canvas: null,
     ctx: null,
-    pack: "a16b16c16a16b16c16a16b16c16a16b16c16a16b16c16a16b16c16a16b16c16a16b16c16a16b16c16a16b16c16a16b16c16a16b16c16a16b16c16a16b16c16a16b16c16a16b16c16"
+    pack: "a32b16a32b16a32b16a32b16a32b16a32b16a32b16a32b16a32b16a32b16a32b16a32b16a32b16a32b16a32b16a32b16c32d16c32d16c32d16c23e2c7d16c21e6c5d16c20e8c4d16c20e8c4d16c19e10c3d16c19e10c3d16c20e8c4d16c20e8c4d16c21e6c5d16c23e2c7d16c32d16c32d16c32d16c263f2c45f4c43f6c42f6c43f4c45f2c263"
   }
 };
 
@@ -37,26 +40,16 @@ GFX.unpackGFX = function(cb) {
 
     if(gfx.pack) {
 
-      var m = [], r = [], k, packs, idx;
-
-      packs = gfx.pack.split(/(\w\d*)/g).filter(function(_) {return !!_});
-      for(idx in packs) {
-        k = (parseInt(packs[idx].substr(1)) || 1) * gfx.s;
-        while(k--) {
-          r = r.concat(GFX_COLOR_TABLE[packs[idx][0]]);
-
-          if(r.length / 4 === gfx.w) {
-            for(var i = 0;i < gfx.s; i++) m = m.concat(r);
-            r = [];
-          }
-        }
-      }
+      var m = [];
+      Array.prototype.forEach.call(Magnifier(Decoder(gfx.pack), gfx.w / gfx.s, gfx.s), function(c) {
+        m.push.apply(m, GFX_COLOR_TABLE[c]);
+      });
 
       try {
         gfx.ctx.putImageData(new ImageData(new Uint8ClampedArray(m), gfx.w, gfx.h), 0, 0);
       } catch(e) {
         // Last minute fix for Edge; slow as hell but it works :)
-        for(var j = 0;j < m.length; j += 4) {
+        for(var i = 0;i < m.length; i += 4) {
           gfx.ctx.beginPath();
           gfx.ctx.fillStyle = "rgba(" + m[i] + ", " + m[i+1] + ", " + m[i+2] + ", " + m[i+3] + ")";
           gfx.ctx.fillRect(Math.floor((i / 4) % gfx.w), Math.floor((i / 4) / gfx.w), 1, 1);
