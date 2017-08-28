@@ -4,6 +4,7 @@
  */
 function Decoder(packedData) {
   return packedData
+    .replace(/\s*/g, "")
     .split(/(\w\d*)/g)
     .filter(Boolean)
     .map(function(pair) {

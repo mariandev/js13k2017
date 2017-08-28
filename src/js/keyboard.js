@@ -11,6 +11,8 @@ Keyboard.Key.Up    = 87;
 Keyboard.Key.Left  = 65;
 Keyboard.Key.Down  = 83;
 Keyboard.Key.Right = 68;
+Keyboard.Key.R     = 82;
+Keyboard.Key.F     = 70;
 
 Keyboard.Keys = {};
 

@@ -1,6 +1,6 @@
 var LayerToIndex = "abcdefghijklmnopqrstuvwxyz";
 
-var LayersCount = 40;
+var LayersCount = 15;
 
 var LayersDef = {
   floor: {
@@ -8,21 +8,22 @@ var LayersDef = {
     offset: 0,
     size: TILE_SIZE,
     layers: 2,
-    layersDef: "ab39"
+    layersDef: "a b14"
   },
   column: {
     gfx: "tiles",
     offset: TILE_SIZE,
     size: TILE_SIZE,
-    layers: 3,
-    layersDef: "ab6c27b6"
+    layers: 5,
+    layersDef: "a be dc3 dc3 dc eb"
+    // layersDef: "a b2e2 b2e2 b2e2 b2"
   },
   wall: {
     gfx: "tiles",
     offset: TILE_SIZE * 2,
     size: TILE_SIZE,
-    layers: 2,
-    layersDef: "a39b"
+    layers: 3,
+    layersDef: "b2c2 b2c2 b2c2 b2 a"
   }
 };
 
@@ -65,7 +66,7 @@ function LayersCreator() {
     var result = [], canvas, ctx, i = 0;
 
     while(i < def.layers) {
-      ctx = (canvas = result[result.push(document.createElement("canvas")) - 1]).getContext("2d");
+      ctx = (canvas = result[result.push(get("canvas")) - 1]).getContext("2d");
       canvas.width = def.size;
       canvas.height = def.size;
 

@@ -1,12 +1,10 @@
 var MAP = function() {
   var self = this;
 
-  self.scalePerLayer = .2 / LayersCount; // .05
-
   self.rawMapData = [];
   self.mapData = [];
-  self.mapWidth = 10;
-  self.mapHeight = 10;
+  self.mapWidth = 31;
+  self.mapHeight = 31;
 
   self.layers = [];
 
@@ -21,7 +19,8 @@ var MAP = function() {
       var r = "b";
 
       if(x === 0 || y === 0 || x === self.mapWidth - 1 || y === self.mapHeight - 1 ) r = "a";
-      else if(Math.random() < 0.25) r = "c";
+      // else if(y === Math.floor(self.mapHeight / 2) && x === Math.floor(self.mapWidth / 2)) r = "c";
+      else if(Math.random() < 0.05) r = "c";
 
       self.rawMapData[y * self.mapWidth + x] = r;
     }
@@ -30,6 +29,9 @@ var MAP = function() {
   self.init = function() {
     self.realWidth = self.mapWidth * TILE_SIZE;
     self.realHeight = self.mapHeight * TILE_SIZE;
+
+    self.layerOffsetX = (GAME_WIDTH - self.realWidth) / 2;
+    self.layerOffsetY = (GAME_HEIGHT - self.realHeight) / 2;
 
     self.decodeMap();
 
@@ -44,9 +46,9 @@ var MAP = function() {
 
   self.renderLayer = function(layer) {
 
-    var image = document.createElement("img"),
+    var image = get("img"),
         canvas,
-        ctx = (canvas = document.createElement("canvas")).getContext("2d");
+        ctx = (canvas = get("canvas")).getContext("2d");
 
     canvas.width = self.realWidth;
     canvas.height = self.realHeight;
@@ -56,7 +58,7 @@ var MAP = function() {
     canvas.imageSmoothingEnabled = false;
 
     self.mapData.forEach(function(tile, i) {
-      ctx.drawImage(
+      Layers[tile][layer] && ctx.drawImage(
         Layers[tile][layer],
         Math.floor(i % self.mapWidth) * TILE_SIZE,
         Math.floor(i / self.mapWidth) * TILE_SIZE,
@@ -70,14 +72,16 @@ var MAP = function() {
     image.style.transform = "translateZ(0) scale(" + self.getLayerScale(layer) + ")";
     image.style.zIndex = layer;
 
-    document.getElementById("map").appendChild(image);
+    id("map").appendChild(image);
     self.layers[layer] = image;
 
     //document.body.appendChild(self.mapCanvas);
   };
 
+  self.scaleBase = 3;
+  self.scaleAdd = .5;
   self.getLayerScale = function(layer) {
-    return 1 + self.scalePerLayer * layer;
+    return self.scaleBase + Math.pow(self.scaleBase, 2) / 100 * layer;
   };
 
   self.offsetX = 0;
@@ -91,11 +95,20 @@ var MAP = function() {
     if(Keyboard.Keys[Keyboard.Key.Down] >= Keyboard.State.Pressed) self.offsetY -= s;
     if(Keyboard.Keys[Keyboard.Key.Left] >= Keyboard.State.Pressed) self.offsetX += s;
     if(Keyboard.Keys[Keyboard.Key.Right] >= Keyboard.State.Pressed) self.offsetX -= s;
+    if(Keyboard.Keys[Keyboard.Key.R] >= Keyboard.State.Pressed) self.scaleBase += self.scaleAdd * dt;
+    if(Keyboard.Keys[Keyboard.Key.F] >= Keyboard.State.Pressed) self.scaleBase -= self.scaleAdd * dt;
+
+    /*console.clear();
+    console.log(self.scalePerLayer);
+    console.log(self.scaleBase);*/
 
     self.layers.forEach(function(layer, i) {
       var scale = self.getLayerScale(i);
-      layer.style.left = (self.offsetX * scale + GAME_WIDTH / 2) + "px";
-      layer.style.top = (self.offsetY * scale - GAME_HEIGHT / 2) + "px";
+      // var scale = clampLeft(self.getLayerScale(i), 1);
+      var left = self.offsetX * scale + self.layerOffsetX;
+      var top = self.offsetY * scale + self.layerOffsetY;
+
+      layer.style.transform = "translate3d(" + left + "px, " + top + "px, 0) scale(" + scale + ")";
     });
   };
 

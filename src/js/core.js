@@ -29,10 +29,10 @@ var CORE = function() {
   };
 
   self.initCanvases = function() {
-    var container = document.getElementById("game");
+    var container = id("game");
 
     Object.keys(self.canvases).forEach(function(canvasId) {
-      var canvas = document.createElement("canvas");
+      var canvas = get("canvas");
 
       canvas.id = canvasId;
       canvas.webkitImageSmoothingEnabled = false;
