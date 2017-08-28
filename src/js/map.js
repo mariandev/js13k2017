@@ -20,7 +20,7 @@ var MAP = function() {
 
       if(x === 0 || y === 0 || x === self.mapWidth - 1 || y === self.mapHeight - 1 ) r = "a";
       // else if(y === Math.floor(self.mapHeight / 2) && x === Math.floor(self.mapWidth / 2)) r = "c";
-      else if(Math.random() < 0.05) r = "c";
+      else if((x % 2 !== y % 2)) r = "c";
 
       self.rawMapData[y * self.mapWidth + x] = r;
     }
@@ -32,6 +32,8 @@ var MAP = function() {
 
     self.layerOffsetX = (GAME_WIDTH - self.realWidth) / 2;
     self.layerOffsetY = (GAME_HEIGHT - self.realHeight) / 2;
+
+    self.layersHolder = id("map");
 
     self.decodeMap();
 
@@ -69,30 +71,15 @@ var MAP = function() {
 
     image.src = canvas.toDataURL();
 
-    image.style.transform = "translateZ(0) scale(" + self.getLayerScale(layer) + ")";
+    image.style.transform = "translateZ(" + (layer * 10) + "px)";
     image.style.zIndex = layer;
 
     id("map").appendChild(image);
     self.layers[layer] = image;
-
-    //document.body.appendChild(self.mapCanvas);
-  };
-
-  self.scaleBase = 3;
-  self.scaleAdd = .5;
-  self.getLayerScale = function(layer) {
-    return Camera.scaleBase + Math.pow(Camera.scaleBase, 2) / 100 * layer;
   };
 
   self.update = function (dt) {
-    self.layers.forEach(function(layer, i) {
-      var scale = self.getLayerScale(i);
-      // var scale = clampLeft(self.getLayerScale(i), 1);
-      var left = Camera.position.x * scale + self.layerOffsetX;
-      var top = Camera.position.y * scale + self.layerOffsetY;
-
-      layer.style.transform = "translate3d(" + left + "px, " + top + "px, 0) scale(" + scale + ")";
-    });
+    self.layersHolder.style.transform = "translate3d(" + Camera.position.x + "px, " + Camera.position.y + "px, " + Camera.zoom + "px)";
   };
 
 };
