@@ -12,7 +12,6 @@ var CORE = function() {
 
   self.init = function() {
     self.initCanvases();
-    self.initListeners();
 
     GFX.unpackGFX(function() {
 
@@ -58,29 +57,6 @@ var CORE = function() {
     window.addEventListener("resize", resizeFn);
   };
 
-  self.x = 0;
-  self.y = 0;
-  self.speed = 5;
-
-  self.initListeners = function() {
-    document.addEventListener("keydown", function(e) {
-      switch(e.which) {
-        case 87: //w
-          self.y -= self.speed;
-          break;
-        case 65: //a
-          self.x -= self.speed;
-          break;
-        case 83: //s
-          self.y += self.speed;
-          break;
-        case 68: //d
-          self.x += self.speed;
-          break;
-      }
-    });
-  };
-
   self.lsts = null;
   self.loop = function() {
     window.requestAnimFrame(self.loop);
@@ -95,14 +71,13 @@ var CORE = function() {
 
   };
   self.update = function(dt) {
+    Camera.update(dt);
     self.map.update(dt);
   };
   self.render = function() {
     Object.keys(self.canvases).forEach(function(canvasId) {
       self.canvases[canvasId].ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
     });
-
-    //self.map.renderMapAt(self.canvases.game.ctx, self.x, self.y);
   };
 
 };

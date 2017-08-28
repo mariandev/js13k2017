@@ -81,32 +81,15 @@ var MAP = function() {
   self.scaleBase = 3;
   self.scaleAdd = .5;
   self.getLayerScale = function(layer) {
-    return self.scaleBase + Math.pow(self.scaleBase, 2) / 100 * layer;
+    return Camera.scaleBase + Math.pow(Camera.scaleBase, 2) / 100 * layer;
   };
 
-  self.offsetX = 0;
-  self.offsetY = 0;
-  self.offsetSpeed = 250;
   self.update = function (dt) {
-
-    var s = self.offsetSpeed * dt;
-
-    if(Keyboard.Keys[Keyboard.Key.Up] >= Keyboard.State.Pressed) self.offsetY += s;
-    if(Keyboard.Keys[Keyboard.Key.Down] >= Keyboard.State.Pressed) self.offsetY -= s;
-    if(Keyboard.Keys[Keyboard.Key.Left] >= Keyboard.State.Pressed) self.offsetX += s;
-    if(Keyboard.Keys[Keyboard.Key.Right] >= Keyboard.State.Pressed) self.offsetX -= s;
-    if(Keyboard.Keys[Keyboard.Key.R] >= Keyboard.State.Pressed) self.scaleBase += self.scaleAdd * dt;
-    if(Keyboard.Keys[Keyboard.Key.F] >= Keyboard.State.Pressed) self.scaleBase -= self.scaleAdd * dt;
-
-    /*console.clear();
-    console.log(self.scalePerLayer);
-    console.log(self.scaleBase);*/
-
     self.layers.forEach(function(layer, i) {
       var scale = self.getLayerScale(i);
       // var scale = clampLeft(self.getLayerScale(i), 1);
-      var left = self.offsetX * scale + self.layerOffsetX;
-      var top = self.offsetY * scale + self.layerOffsetY;
+      var left = Camera.position.x * scale + self.layerOffsetX;
+      var top = Camera.position.y * scale + self.layerOffsetY;
 
       layer.style.transform = "translate3d(" + left + "px, " + top + "px, 0) scale(" + scale + ")";
     });
