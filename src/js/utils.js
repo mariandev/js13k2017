@@ -49,3 +49,11 @@ function id(v) {
 function get(t) {
   return  document.createElement(t);
 }
+
+/**
+ * @param {number} v
+ * @return {number}
+ * */
+function sgn(v) {
+  return Math.abs(v) / v;
+}

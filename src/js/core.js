@@ -1,4 +1,4 @@
-var CORE = function() {
+var Core = new function() {
 
   var self = this;
 
@@ -7,8 +7,7 @@ var CORE = function() {
     ui: {canvas: null, ctx: null}
   };
 
-  self.layerCreator = null;
-  self.map = null;
+  self.container = null;
 
   self.init = function() {
     self.initCanvases();
@@ -16,19 +15,17 @@ var CORE = function() {
     GFX.unpackGFX(function() {
 
       Keyboard.init();
+      Mouse.init();
 
-      self.layerCreator = new LayersCreator();
-      self.layerCreator.init(function() {
-        self.map = new MAP();
-        self.map.init();
-
+      LayersCreator.init(function() {
+        Map.init();
         self.loop();
       });
     });
   };
 
   self.initCanvases = function() {
-    var container = id("game");
+    self.container = id("game");
 
     Object.keys(self.canvases).forEach(function(canvasId) {
       var canvas = get("canvas");
@@ -38,7 +35,7 @@ var CORE = function() {
       canvas.mozImageSmoothingEnabled = false;
       canvas.imageSmoothingEnabled = false;
 
-      container.appendChild(canvas);
+      self.container.appendChild(canvas);
 
       self.canvases[canvasId].ctx = (self.canvases[canvasId].canvas = canvas).getContext("2d");
     });
@@ -49,8 +46,8 @@ var CORE = function() {
         self.canvases[canvas].canvas.height = GAME_HEIGHT;
       });
 
-      container.style.width = GAME_WIDTH + "px";
-      container.style.height = GAME_HEIGHT + "px";
+      self.container.style.width = GAME_WIDTH + "px";
+      self.container.style.height = GAME_HEIGHT + "px";
     };
 
     resizeFn();
@@ -72,7 +69,7 @@ var CORE = function() {
   };
   self.update = function(dt) {
     Camera.update(dt);
-    self.map.update(dt);
+    Map.update(dt);
   };
   self.render = function() {
     Object.keys(self.canvases).forEach(function(canvasId) {
@@ -82,11 +79,8 @@ var CORE = function() {
 
 };
 
-var core;
-
 window.addEventListener("load", function() {
-  core = new CORE();
-  core.init();
+  Core.init();
 });
 
 window.requestAnimFrame = (function(){

@@ -8,17 +8,46 @@ function Point(x, y) {
   self.x = x;
   self.y = y;
 
+  /**
+   * @param {number} amt
+   * @return Point
+   * */
   self.mul = function(amt) {
     return new Point(self.x * amt, self.y * amt);
   };
 
+  /**
+   * @param {number} min
+   * @param {number} max
+   * @return Point
+   * */
+  self.clamp = function(min, max) {
+    return new Point(clamp(self.x, min, max), clamp(self.y, min, max));
+  };
+
+  /**
+   * @param {Point} other
+   * @return Point
+   * */
   self.add = function(other) {
     return new Point(self.x + other.x, self.y + other.y);
   };
 
+  /**
+   * @param {Point} other
+   * @return Point
+   * */
   self.sub = function(other) {
     return new Point(self.x - other.x, self.y - other.y);
   };
+
+  /**
+   * @param {Point} other
+   * @return Point
+   * */
+  self.flat = function(other) {
+    return new Point(self.x * other.x, self.y * other.y);
+  }
 }
 
 Point.zero = function() { return new Point(0, 0) };

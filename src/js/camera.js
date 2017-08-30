@@ -2,11 +2,11 @@ var Camera = new function() {
   var self = this;
 
   self.position = Point.zero();
-  self.speed = 250;
+  self.speed = 150;
   self.left = Point.left();
   self.down = Point.down();
 
-  self.zoom = 500;
+  self.zoom = 800;
   self.zoomAdd = 250;
 
   /**

@@ -8,6 +8,9 @@ var GAME_HEIGHT = 720;*/
 var GAME_WIDTH = innerWidth;
 var GAME_HEIGHT = innerHeight;
 
+var GAME_SIZE = new Point(GAME_WIDTH, GAME_HEIGHT);
+var ONE_OVER_GAME_SIZE = new Point(1 / GAME_WIDTH, 1 / GAME_HEIGHT);
+
 var GFX_SCALE = 4;
 var BASE_TILE_SIZE = 16;
 var TILE_SIZE = BASE_TILE_SIZE * GFX_SCALE;

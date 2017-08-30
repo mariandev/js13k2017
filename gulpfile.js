@@ -36,6 +36,7 @@ var gulp          = require('gulp'),
       'src/js/point.js',
       'src/js/globals.js',
       'src/js/keyboard.js',
+      'src/js/mouse.js',
       'src/js/decoder.js',
       'src/js/magnifier.js',
       'src/js/layerfy.js',
@@ -75,7 +76,7 @@ gulp.task('buildCSS', function () {
 gulp.task('buildJS', function () {
   return gulp.src(sourcePaths.js)
     .pipe(concat(distPaths.js_build_file))
-    .pipe(uglify())
+    //.pipe(uglify())
     .pipe(gulp.dest(distPaths.build));
 });
 

@@ -33,7 +33,7 @@ var Layers = {
   column: []
 };
 
-function LayersCreator() {
+var LayersCreator = new function() {
   var self = this;
 
   /**

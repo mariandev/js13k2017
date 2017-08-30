@@ -1,4 +1,4 @@
-var MAP = function() {
+var Map = new function() {
   var self = this;
 
   self.rawMapData = [];
@@ -20,7 +20,7 @@ var MAP = function() {
 
       if(x === 0 || y === 0 || x === self.mapWidth - 1 || y === self.mapHeight - 1 ) r = "a";
       // else if(y === Math.floor(self.mapHeight / 2) && x === Math.floor(self.mapWidth / 2)) r = "c";
-      else if((x % 2 !== y % 2)) r = "c";
+      else if((x % 2 === y % 2)) r = "c";
 
       self.rawMapData[y * self.mapWidth + x] = r;
     }
@@ -74,12 +74,20 @@ var MAP = function() {
     image.style.transform = "translateZ(" + (layer * 10) + "px)";
     image.style.zIndex = layer;
 
-    id("map").appendChild(image);
+    self.layersHolder.appendChild(image);
     self.layers[layer] = image;
   };
 
   self.update = function (dt) {
-    self.layersHolder.style.transform = "translate3d(" + Camera.position.x + "px, " + Camera.position.y + "px, " + Camera.zoom + "px)";
+    var distance = 10;
+    var t = Mouse.positionFromCenter.flat(ONE_OVER_GAME_SIZE.mul(2)).mul(-1);
+    var tx = Math.abs(t.x); tx = tx * (2 - tx) * sgn(t.x);
+    var ty = Math.abs(t.y); ty = ty * (2 - ty) * sgn(t.y);
+
+    var x = Camera.position.x + tx * distance;
+    var y = Camera.position.y + ty * distance;
+
+    self.layersHolder.style.transform = "translate3d(" + x + "px, " + y + "px, " + Camera.zoom + "px)";
   };
 
 };
