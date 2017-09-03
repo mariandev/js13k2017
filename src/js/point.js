@@ -17,12 +17,12 @@ function Point(x, y) {
   };
 
   /**
-   * @param {number} min
-   * @param {number} max
+   * @param {Point} min
+   * @param {Point} max
    * @return Point
    * */
   self.clamp = function(min, max) {
-    return new Point(clamp(self.x, min, max), clamp(self.y, min, max));
+    return new Point(clamp(self.x, min.x, max.x), clamp(self.y, min.y, max.y));
   };
 
   /**
