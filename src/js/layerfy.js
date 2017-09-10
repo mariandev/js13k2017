@@ -1,102 +1,150 @@
 var LayerToIndex = "abcdefghijklmnopqrstuvwxyz";
 
-var LayersCount = 15;
+/**
+ * @typedef {object} LayerDef
+ * @property {string} gfx
+ * @property {number} offset
+ * @property {number} size
+ * @property {number} layers
+ * @property {string} layersDef
+ * @property {number} [rotation]
+ * */
 
-var LayersDef = {
-  floor: {
-    gfx: "tiles",
-    offset: 0,
-    size: TILE_SIZE,
-    layers: 2,
-    layersDef: "a b14"
+/**
+ * @type {Object.<string, LayerDef>}
+ * */
+window.LayersDef = {
+  "floor": {
+    "gfx": "tiles",
+    "offset": 0,
+    "size": TILE_SIZE,
+    "layers": 1,
+    "layersDef": "a"
   },
-  column: {
-    gfx: "tiles",
-    offset: TILE_SIZE,
-    size: TILE_SIZE,
-    layers: 5,
-    layersDef: "a be dc3 dc3 dc eb"
-    // layersDef: "a b2e2 b2e2 b2e2 b2"
+  "wallN": {
+    "gfx": "tiles",
+    "offset": TILE_SIZE * 2,
+    "size": TILE_SIZE,
+    "layers": 10,
+    "layersDef": "af2 bg2 ch2 di2 ej2"
+    // layersDef: "a2e b2f c2g d2h a2e"
   },
-  wallN: {
-    gfx: "tiles",
-    offset: TILE_SIZE * 2,
-    size: TILE_SIZE,
-    layers: 5,
-    layersDef: "a b5 c4 d3 e2"
+  "wallS": {
+    "gfx": "tiles",
+    "offset": TILE_SIZE * 2,
+    "size": TILE_SIZE,
+    "layers": 10,
+    "layersDef": "af2 bg2 ch2 di2 ej2",
+    "rotation": Math.PI
   },
-  wallS: {
-    gfx: "tiles",
-    offset: TILE_SIZE * 2,
-    size: TILE_SIZE,
-    layers: 5,
-    layersDef: "a b5 c4 d3 e2",
-    rotation: Math.PI
+  "wallE": {
+    "gfx": "tiles",
+    "offset": TILE_SIZE * 2,
+    "size": TILE_SIZE,
+    "layers": 10,
+    "layersDef": "af2 bg2 ch2 di2 ej2",
+    "rotation": Math.PI / 2
   },
-  wallE: {
-    gfx: "tiles",
-    offset: TILE_SIZE * 2,
-    size: TILE_SIZE,
-    layers: 5,
-    layersDef: "a b5 c4 d3 e2",
-    rotation: Math.PI / 2
+  "wallW": {
+    "gfx": "tiles",
+    "offset": TILE_SIZE * 2,
+    "size": TILE_SIZE,
+    "layers": 10,
+    "layersDef": "af2 bg2 ch2 di2 ej2",
+    "rotation": Math.PI * 3 / 2
   },
-  wallW: {
-    gfx: "tiles",
-    offset: TILE_SIZE * 2,
-    size: TILE_SIZE,
-    layers: 5,
-    layersDef: "a b5 c4 d3 e2",
-    rotation: Math.PI * 3 / 2
+  "wallCornerNW": {
+    "gfx": "tiles",
+    "offset": TILE_SIZE * 3,
+    "size": TILE_SIZE,
+    "layers": 10,
+    "layersDef": "af2 bg2 ch2 di2 ej2"
   },
-  wallCorner: {
-    gfx: "tiles",
-    offset: TILE_SIZE * 3,
-    size: TILE_SIZE,
-    layers: 1,
-    layersDef: "a15"
+  "wallCornerSE": {
+    "gfx": "tiles",
+    "offset": TILE_SIZE * 3,
+    "size": TILE_SIZE,
+    "layers": 10,
+    "layersDef": "af2 bg2 ch2 di2 ej2",
+    "rotation": Math.PI
+  },
+  "wallCornerSW": {
+    "gfx": "tiles",
+    "offset": TILE_SIZE * 3,
+    "size": TILE_SIZE,
+    "layers": 10,
+    "layersDef": "af2 bg2 ch2 di2 ej2",
+    "rotation": Math.PI / 2
+  },
+  "wallCornerNE": {
+    "gfx": "tiles",
+    "offset": TILE_SIZE * 3,
+    "size": TILE_SIZE,
+    "layers": 10,
+    "layersDef": "af2 bg2 ch2 di2 ej2",
+    "rotation": Math.PI * 3 / 2
+  },
+  "columnHalf": {
+    "gfx": "tiles",
+    "offset": TILE_SIZE * 4,
+    "size": TILE_SIZE,
+    "layers": 8,
+    "layersDef": "a2e bf c3g"
+  },
+  "columnFull": {
+    "gfx": "tiles",
+    "offset": TILE_SIZE * 4,
+    "size": TILE_SIZE,
+    "layers": 8,
+    "layersDef": "a2e bf c5g d3h"
+  },
+  "scroll": {
+    "gfx": "tiles",
+    "offset": TILE_SIZE,
+    "size": TILE_SIZE,
+    "layers": 6,
+    "layersDef": "ab2a c2 d e2 f2 ab2a"
+  },
+  "questionMark": {
+    "gfx": "tiles",
+    "offset": TILE_SIZE,
+    "size": TILE_SIZE,
+    "layers": 8,
+    "layersDef": "a b2 c d e f g4 h2 g2".split("").reverse().join(""),
+    "rotation": Math.PI
+  },
+  "human": {
+    "gfx": "tiles",
+    "offset": TILE_SIZE * 5,
+    "size": TILE_SIZE,
+    "layers": 6,
+    "layersDef": "e4 f2 c4 d2 b2 a"
   }
 };
 
-var Layers = {
-  floor: [],
-  wallN: [],
-  wallS: [],
-  wallE: [],
-  wallW: [],
-  wallCorner: [],
-  column: []
-};
+/**
+ * @type {Object.<string, HTMLCanvasElement[]>}
+ * */
+var Layers = {};
 
 var LayersCreator = new function() {
   var self = this;
-
-  /**
-   * @callback VoidCallback
-   * @return {void}
-   * */
 
   /**
    * @param {VoidCallback} cb
    * @return {void}
    */
   self.init = function(cb) {
-    Object.keys(LayersDef).forEach(function(key) {
-      Layers[key] = layerfy(LayersDef[key]);
+    Object.keys(window.LayersDef).forEach(function(key) {
+      Layers[key] = layerfy(window.LayersDef[key]);
     });
 
     cb();
   };
 
   /**
-   * @param {object} def
-   * @param {string} def.gfx
-   * @param {number} def.offset
-   * @param {number} def.size
-   * @param {number} def.layers
-   * @param {string} def.layersDef
-   * @param {number} [def.rotation]
-   * @return {Array}
+   * @param {LayerDef} def
+   * @return {HTMLCanvasElement[]}
    */
   var layerfy = function(def) {
     var result = [], canvas, ctx, i = 0;
@@ -116,7 +164,7 @@ var LayersCreator = new function() {
       }
 
       ctx.drawImage(
-        GFX[def.gfx].canvas,
+        GFX[def["gfx"]].canvas,
         def.offset,
         def.size * i,
         def.size,
@@ -136,8 +184,8 @@ var LayersCreator = new function() {
       i++;
     }
 
-    return Array.prototype.map.call(Decoder(def.layersDef), function(c) {
+    return Array.prototype.map.call(Decoder(def["layersDef"]), function(c) {
       return result[LayerToIndex.indexOf(c)];
     });
   };
-}
+};

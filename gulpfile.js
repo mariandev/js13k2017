@@ -34,6 +34,7 @@ var gulp          = require('gulp'),
     js: [
       'src/js/utils.js',
       'src/js/point.js',
+      'src/js/entity.js',
       'src/js/globals.js',
       'src/js/keyboard.js',
       'src/js/mouse.js',
@@ -43,6 +44,8 @@ var gulp          = require('gulp'),
       'src/js/camera.js',
       'src/js/gfx.js',
       'src/js/map.js',
+      'src/js/entityManager.js',
+      'src/js/entity.js',
       'src/js/core.js'
     ],
     mainHtml: [

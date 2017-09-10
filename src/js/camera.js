@@ -1,7 +1,7 @@
 var Camera = new function() {
   var self = this;
 
-  self.position = Point.zero();
+  self.position = new Point(GAME_WIDTH / 2, GAME_HEIGHT / 2);
   self.speed = 150;
   self.left = Point.left();
   self.down = Point.down();
@@ -11,6 +11,7 @@ var Camera = new function() {
 
   /**
    * @param {number} dt
+   * @return {void}
    * */
   self.update = function(dt) {
     var s = self.speed * dt;

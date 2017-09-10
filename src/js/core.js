@@ -12,14 +12,17 @@ var Core = new function() {
   self.init = function() {
     self.initCanvases();
 
-    GFX.unpackGFX(function() {
+    window.GFX_unpackGFX(function() {
 
       Keyboard.init();
       Mouse.init();
 
       LayersCreator.init(function() {
         Map.init();
-        self.loop();
+
+        EntityManager.Init(function() {
+          self.loop();
+        });
       });
     });
   };
@@ -70,11 +73,14 @@ var Core = new function() {
   self.update = function(dt) {
     Camera.update(dt);
     Map.update(dt);
+    EntityManager.Update(dt);
   };
   self.render = function() {
     Object.keys(self.canvases).forEach(function(canvasId) {
       self.canvases[canvasId].ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
     });
+
+    EntityManager.Render();
   };
 
 };

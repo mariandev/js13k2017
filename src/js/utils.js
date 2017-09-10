@@ -1,4 +1,10 @@
 /**
+ * @function
+ * @callback VoidCallback
+ * @return {void}
+ * */
+
+/**
  * @param {number} value
  * @param {number} min
  * @return {number}
@@ -55,5 +61,28 @@ function get(t) {
  * @return {number}
  * */
 function sgn(v) {
-  return Math.abs(v) / v;
+  return v ? Math.abs(v) / v : 1;
+}
+
+var DEG_TO_RAD = Math.PI / 180;
+var RAD_TO_DEG = 1 / DEG_TO_RAD;
+
+/**
+ * @param {Point} tile
+ * @return {Point}
+ * */
+function tileToWorldSpace(tile) {
+  return tile.mul(TILE_SIZE);
+}
+
+/**
+ * @param {Point} ws
+ * @return {Point}
+ * */
+function worldSpaceToTile(ws) {
+  var t = ws.mul(1 / TILE_SIZE);
+  return new Point(
+    Math.floor(t.x),
+    Math.floor(t.y)
+  );
 }
