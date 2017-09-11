@@ -2,25 +2,30 @@ var Camera = new function() {
   var self = this;
 
   self.position = new Point(GAME_WIDTH / 2, GAME_HEIGHT / 2);
-  self.speed = 150;
-  self.left = Point.left();
-  self.down = Point.down();
 
   self.zoom = 800;
-  self.zoomAdd = 250;
 
   /**
-   * @param {number} dt
    * @return {void}
    * */
-  self.update = function(dt) {
-    var s = self.speed * dt;
+  self.update = function() {
+    if(!self._entity) return;
 
-    if(Keyboard.Keys[Keyboard.Key.Up] >= Keyboard.State.Pressed)    self.position = self.position.add(self.down.mul(s));
-    if(Keyboard.Keys[Keyboard.Key.Down] >= Keyboard.State.Pressed)  self.position = self.position.sub(self.down.mul(s));
-    if(Keyboard.Keys[Keyboard.Key.Left] >= Keyboard.State.Pressed)  self.position = self.position.add(self.left.mul(s));
-    if(Keyboard.Keys[Keyboard.Key.Right] >= Keyboard.State.Pressed) self.position = self.position.sub(self.left.mul(s));
-    if(Keyboard.Keys[Keyboard.Key.R] >= Keyboard.State.Pressed) self.zoom += self.zoomAdd * dt;
-    if(Keyboard.Keys[Keyboard.Key.F] >= Keyboard.State.Pressed) self.zoom -= self.zoomAdd * dt;
+    self.position.x = GAME_WIDTH / 2 - self._entity.position.x;
+    self.position.y = GAME_HEIGHT / 2 - self._entity.position.y;
+  };
+
+  /**
+   * @private
+   * @type {Entity}
+   */
+  self._entity = null;
+
+  /**
+   * @param {Entity} entity
+   * @return {void}
+   * */
+  self.follow = function(entity) {
+    self._entity = entity;
   };
 };

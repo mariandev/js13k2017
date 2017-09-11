@@ -71,9 +71,9 @@ var Core = new function() {
 
   };
   self.update = function(dt) {
-    Camera.update(dt);
-    Map.update(dt);
     EntityManager.Update(dt);
+    Camera.update();
+    Map.update(dt);
   };
   self.render = function() {
     Object.keys(self.canvases).forEach(function(canvasId) {

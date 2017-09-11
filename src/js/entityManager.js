@@ -90,9 +90,11 @@ var EntityManager = new function() {
   }
 };
 
-Entity.new(
-  "human",
-  {
-    position: tileToWorldSpace(new Point(0, 0))
-  }
+Camera.follow(
+  Entity.new(
+    "human",
+    {
+      position: tileToWorldSpace(new Point(2, 2))
+    }
+  )
 );
