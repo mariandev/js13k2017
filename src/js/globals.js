@@ -19,3 +19,5 @@ var HALF_TILE_SIZE = TILE_SIZE / 2;
 var LayersCount = 15;
 
 var DISTANCE_BETWEEN_LAYERS = 7.5;
+
+var PLAYER;

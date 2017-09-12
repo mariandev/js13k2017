@@ -76,6 +76,37 @@ window.LayersDef = {
     "layersDef": "af2 bg2 ch2 di2 ej2",
     "rotation": Math.PI / 2
   },
+  "wallInnerCornerSW": {
+    "gfx": "tiles",
+    "offset": TILE_SIZE * 4,
+    "size": TILE_SIZE,
+    "layers": 10,
+    "layersDef": "af2 bg2 ch2 di2 ej2",
+    "rotation": Math.PI * 3 / 2
+  },
+  "wallInnerCornerNW": {
+    "gfx": "tiles",
+    "offset": TILE_SIZE * 4,
+    "size": TILE_SIZE,
+    "layers": 10,
+    "layersDef": "af2 bg2 ch2 di2 ej2"
+  },
+  "wallInnerCornerSE": {
+    "gfx": "tiles",
+    "offset": TILE_SIZE * 4,
+    "size": TILE_SIZE,
+    "layers": 10,
+    "layersDef": "af2 bg2 ch2 di2 ej2",
+    "rotation": Math.PI
+  },
+  "wallInnerCornerNE": {
+    "gfx": "tiles",
+    "offset": TILE_SIZE * 4,
+    "size": TILE_SIZE,
+    "layers": 10,
+    "layersDef": "af2 bg2 ch2 di2 ej2",
+    "rotation": Math.PI / 2
+  },
   "wallCornerNE": {
     "gfx": "tiles",
     "offset": TILE_SIZE * 3,
@@ -86,39 +117,45 @@ window.LayersDef = {
   },
   "columnHalf": {
     "gfx": "tiles",
-    "offset": TILE_SIZE * 4,
+    "offset": TILE_SIZE * 5,
     "size": TILE_SIZE,
     "layers": 8,
     "layersDef": "a2e bf c3g"
   },
   "columnFull": {
     "gfx": "tiles",
-    "offset": TILE_SIZE * 4,
+    "offset": TILE_SIZE * 5,
     "size": TILE_SIZE,
     "layers": 8,
     "layersDef": "a2e bf c5g d3h"
   },
-  "scroll": {
-    "gfx": "tiles",
-    "offset": TILE_SIZE,
-    "size": TILE_SIZE,
-    "layers": 6,
-    "layersDef": "ab2a c2 d e2 f2 ab2a"
-  },
-  "questionMark": {
-    "gfx": "tiles",
-    "offset": TILE_SIZE,
-    "size": TILE_SIZE,
-    "layers": 8,
-    "layersDef": "a b2 c d e f g4 h2 g2".split("").reverse().join(""),
-    "rotation": Math.PI
-  },
   "human": {
     "gfx": "tiles",
-    "offset": TILE_SIZE * 5,
+    "offset": TILE_SIZE * 6,
     "size": TILE_SIZE,
     "layers": 6,
     "layersDef": "e4 f2 c4 d2 b2 a"
+  },
+  "solidWall": {
+    "gfx": "tiles",
+    "offset": TILE_SIZE * 8,
+    "size": TILE_SIZE,
+    "layers": 1,
+    "layersDef": "a15"
+  },
+  "trap": {
+    "gfx": "tiles",
+    "offset": TILE_SIZE,
+    "size": TILE_SIZE,
+    "layers": 2,
+    "layersDef": "ab"
+  },
+  "crystal": {
+    "gfx": "tiles",
+    "offset": TILE_SIZE * 7,
+    "size": TILE_SIZE,
+    "layers": 6,
+    "layersDef": "ad be cf be ad"
   }
 };
 

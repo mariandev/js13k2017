@@ -55,6 +55,13 @@ function Point(x, y) {
   self.angle = function() {
     return Math.atan2(self.y, self.x);
   };
+
+  /**
+   * @return Point
+   * */
+  self.clone = function() {
+    return new Point(self.x, self.y);
+  };
 }
 
 Point.zero = function() { return Point.from(0) };

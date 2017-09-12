@@ -91,10 +91,17 @@ var EntityManager = new function() {
 };
 
 Camera.follow(
-  Entity.new(
+  PLAYER = Entity.new(
     "human",
     {
-      position: tileToWorldSpace(new Point(2, 2))
+      position: tileToWorldSpace(new Point(1, 2))
     }
   )
+);
+
+Entity.new(
+  "trap",
+  {
+    position: tileToWorldSpace(new Point(11, 3))
+  }
 );

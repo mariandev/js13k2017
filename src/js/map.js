@@ -1,15 +1,59 @@
 var Map = new function() {
   var self = this;
 
-  self.rawMapData = [];
+  /*
+
+  "ieeeeeeek..",
+  "h.......g..",
+  "h.......g..",
+  "h.......g..",
+  "lffo.nffj..",
+  "ieem.peek..",
+  "h.......g..",
+  "h.......g..",
+  "h.......g..",
+  "lfffffffj.."
+
+  * */
+
+  self.rawMapData = [
+    "ieeeeeeek#iek",
+    "h...c...pem.g",
+    "h.....d.....g",
+    "hd......nfo.g",
+    "lfffo.nfj#lfj",
+    "ieekh.peekiek",
+    "h..gh....gh.g",
+    "h..gh..d.pm.g",
+    "h..gh.......g",
+    "h..glo.nffffj",
+    "h..pem.g##iek",
+    "h......g##h.g",
+    "h.c..nfj##h.g",
+    "h....peeeem.g",
+    "h...........g",
+    "lffffffo...dg",
+    "#######h..c.g",
+    "ieeeeeem....g",
+    "h...........g",
+    "h.....no....g",
+    "lfffffjlffffj"
+  ]
+    .map(function(t) {
+      return t.replace(/\s/g, "").split("");
+    })
+    .reduce(function(a, v) {
+      return a.concat(v)
+    }, []);
   self.mapData = [];
-  self.mapWidth = 11;
-  self.mapHeight = 11;
+  self.mapWidth = 13;
+  self.mapHeight = 21;
 
   self.layers = [];
 
   var tileTypes = {
-    "a": "air",
+    ".": "air",
+    "#": "solidWall",
     "b": "floor",
     "c": "columnHalf",
     "d": "columnFull",
@@ -20,10 +64,15 @@ var Map = new function() {
     "i": "wallCornerNW",
     "j": "wallCornerSE",
     "k": "wallCornerSW",
-    "l": "wallCornerNE"
+    "l": "wallCornerNE",
+    "m": "wallInnerCornerNW",
+    "n": "wallInnerCornerSE",
+    "o": "wallInnerCornerSW",
+    "p": "wallInnerCornerNE"
   };
 
-  for(var y = 0;y < self.mapHeight; y++) {
+
+  /*for(var y = 0;y < self.mapHeight; y++) {
     for(var x = 0;x < self.mapWidth; x++) {
       var r = "a";
 
@@ -40,7 +89,7 @@ var Map = new function() {
 
       self.rawMapData[y * self.mapWidth + x] = r;
     }
-  }
+  }*/
 
   self.init = function() {
     self.realWidth = self.mapWidth * TILE_SIZE;
@@ -84,10 +133,17 @@ var Map = new function() {
 
       tile = isFloorLayer ? "floor" : tile;
 
+      var x = Math.floor(i % self.mapWidth) * TILE_SIZE;
+      var y = Math.floor(i / self.mapWidth) * TILE_SIZE;
+
+      if(!layer && !isFloorLayer && tile !== tileTypes["."]) {
+        Physics.AddCollider("map", x, y, TILE_SIZE, TILE_SIZE);
+      }
+
       Layers[tile] && Layers[tile][layer] && ctx.drawImage(
         Layers[tile][layer],
-        Math.floor(i % self.mapWidth) * TILE_SIZE,
-        Math.floor(i / self.mapWidth) * TILE_SIZE,
+        x,
+        y,
         TILE_SIZE,
         TILE_SIZE
       );

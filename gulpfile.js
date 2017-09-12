@@ -43,6 +43,7 @@ var gulp          = require('gulp'),
       'src/js/layerfy.js',
       'src/js/camera.js',
       'src/js/gfx.js',
+      'src/js/physics.js',
       'src/js/map.js',
       'src/js/entityManager.js',
       'src/js/entity.js',
@@ -79,7 +80,7 @@ gulp.task('buildCSS', function () {
 gulp.task('buildJS', function () {
   return gulp.src(sourcePaths.js)
     .pipe(concat(distPaths.js_build_file))
-    //.pipe(uglify())
+    .pipe(uglify())
     .pipe(gulp.dest(distPaths.build));
 });
 
