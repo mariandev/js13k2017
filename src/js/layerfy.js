@@ -156,6 +156,13 @@ window.LayersDef = {
     "size": TILE_SIZE,
     "layers": 6,
     "layersDef": "ad be cf be ad"
+  },
+  "exit": {
+    "gfx": "tiles",
+    "offset": TILE_SIZE * 7,
+    "size": TILE_SIZE,
+    "layers": 6,
+    "layersDef": "f"
   }
 };
 

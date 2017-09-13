@@ -119,6 +119,9 @@ Entity.types = {
       entity.dir = Point.zero();
 
       entity.injured = 0;
+      entity.treasures = 0;
+
+      entity.noMovement = false;
 
       entity.getBB = function() {
         return {
@@ -130,6 +133,8 @@ Entity.types = {
       };
     },
     onUpdate: function(entity, dt) {
+      if(entity.noMovement) return;
+
       var s = (entity.speed - entity.injured * 50) * dt, v, h;
 
       v = h = 0;
@@ -213,10 +218,27 @@ Entity.types = {
       entity.offsetHelperAngle = 0;
     },
     onUpdate: function(entity, dt) {
+      // Update visuals
       entity.rotation += 50 * dt;
 
       entity.offsetHelperAngle += 100 * dt;
       entity.offset = Math.round(Math.abs(Math.sin(entity.offsetHelperAngle * DEG_TO_RAD) * 3));
+
+      // Check for pickup
+
+      var bb = PLAYER.getBB();
+
+      if(!entity.triggered && Physics.Collide(
+          bb.x, bb.y, bb.w, bb.h,
+          entity.position.x + 16,
+          entity.position.y + 16,
+          TILE_SIZE - 16 * 2,
+          TILE_SIZE - 16 * 2
+        )) {
+        EntityManager.Remove(entity);
+
+        PLAYER.treasures++;
+      }
     },
     onRender: function(entity, ctx, layer) {
       layer -= entity.offset;
@@ -254,11 +276,55 @@ Entity.types = {
       )) {
         entity.triggered = true;
         PLAYER.injured++;
+
+        if(PLAYER.injured >= 3) {
+          PLAYER.noMovement = true;
+
+          id("gameOver").classList.add("show");
+        }
       }
     },
     onRender: function(entity, ctx, layer) {
       !layer && ctx.drawImage(
         Layers[entity._def.gfx][entity.triggered ? 1 : 0],
+        0, // TODO: modify this offset to support animations
+        0,
+        entity.size.x,
+        entity.size.y,
+        0,
+        0,
+        entity.size.x,
+        entity.size.y
+      );
+    }
+  },
+  exit: {
+    gfx: "exit",
+    position: Point.zero(),
+    onUpdate: function(entity) {
+      var bb = PLAYER.getBB();
+
+      if(Physics.Collide(
+          bb.x, bb.y, bb.w, bb.h,
+          entity.position.x + 16,
+          entity.position.y + 16,
+          TILE_SIZE - 16 * 2,
+          TILE_SIZE - 16 * 2
+        )) {
+
+        PLAYER.noMovement = true;
+
+        id("gameWon").classList.add("show");
+
+        id("trap-" + PLAYER.injured).style.display = "block";
+
+        id("treasure").innerText = "You got " + PLAYER.treasures + " treasures"
+
+      }
+    },
+    onRender: function(entity, ctx, layer) {
+      Layers[entity._def.gfx][layer] && ctx.drawImage(
+        Layers[entity._def.gfx][layer],
         0, // TODO: modify this offset to support animations
         0,
         entity.size.x,

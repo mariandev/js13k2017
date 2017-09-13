@@ -24,6 +24,24 @@ var EntityManager = new function() {
   };
 
   /**
+   * @param {Entity} entity
+   * @return {Entity}
+   * */
+  self.Remove = function(entity) {
+    Object.keys(self._entities)
+      .map(function(priority) {
+        return self._entities[priority];
+      })
+      .forEach(function (entities) {
+        var idx = entities.indexOf(entity);
+
+        if(idx !== -1) {
+          entities.splice(idx, 1);
+        }
+      });
+  };
+
+  /**
    * @callback LoopFunction
    * @property {Entity} entity
    * */
@@ -103,5 +121,60 @@ Entity.new(
   "trap",
   {
     position: tileToWorldSpace(new Point(11, 3))
+  }
+);
+
+Entity.new(
+  "trap",
+  {
+    position: tileToWorldSpace(new Point(7, 8))
+  }
+);
+
+Entity.new(
+  "trap",
+  {
+    position: tileToWorldSpace(new Point(2, 8))
+  }
+);
+
+Entity.new(
+  "crystal",
+  {
+    position: tileToWorldSpace(new Point(11, 6))
+  }
+);
+
+Entity.new(
+  "crystal",
+  {
+    position: tileToWorldSpace(new Point(1, 6))
+  }
+);
+Entity.new(
+  "crystal",
+  {
+    position: tileToWorldSpace(new Point(2, 6))
+  }
+);
+
+Entity.new(
+  "crystal",
+  {
+    position: tileToWorldSpace(new Point(11, 11))
+  }
+);
+
+Entity.new(
+  "exit",
+  {
+    position: tileToWorldSpace(new Point(1, 18))
+  }
+);
+
+Entity.new(
+  "exit",
+  {
+    position: tileToWorldSpace(new Point(1, 19))
   }
 );

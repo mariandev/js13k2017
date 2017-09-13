@@ -39,12 +39,8 @@ var Map = new function() {
     "h.....no....g",
     "lfffffjlffffj"
   ]
-    .map(function(t) {
-      return t.replace(/\s/g, "").split("");
-    })
-    .reduce(function(a, v) {
-      return a.concat(v)
-    }, []);
+    .join("")
+    .split("");
   self.mapData = [];
   self.mapWidth = 13;
   self.mapHeight = 21;
